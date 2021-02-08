@@ -1,0 +1,9 @@
+[
+  {
+    "administrationLevel": "string",
+    "administrationManager": "string",
+    "authorityLevel": "string",
+    "emailAddress": "string",
+    "fullName": "string"
+  }
+]

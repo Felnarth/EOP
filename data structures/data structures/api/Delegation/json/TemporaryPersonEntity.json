@@ -1,0 +1,12 @@
+{
+  "authorityLevel": "string",
+  "company": "string",
+  "contactInfo": "string",
+  "exemptStatus": "string",
+  "fullName": "string",
+  "location": "string",
+  "organization": "string",
+  "pager": "string",
+  "userId": "string",
+  "workPhone": "string"
+}

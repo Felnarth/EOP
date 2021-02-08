@@ -1,0 +1,12 @@
+{
+  "offset": 0,
+  "pageNumber": 0,
+  "pageSize": 0,
+  "paged": true,
+  "sort": {
+    "empty": true,
+    "sorted": true,
+    "unsorted": true
+  },
+  "unpaged": true
+}

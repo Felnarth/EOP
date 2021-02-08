@@ -1,0 +1,13 @@
+{
+  "deviceCarrier": "string",
+  "deviceID": "string",
+  "deviceType": "string",
+  "emailEnabled": "string",
+  "preferredManagement": "string",
+  "preferredOrganization": "string",
+  "preferredReceiveMessage": "string",
+  "preferredSite": "string",
+  "updatedAlternateId": "string",
+  "updatedTimestamp": "string",
+  "userID": "string"
+}

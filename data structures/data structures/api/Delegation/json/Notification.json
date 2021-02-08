@@ -1,0 +1,23 @@
+{
+  "Attachments": "string",
+  "BCCAddress": "string",
+  "Body": "string",
+  "CCAddress": "string",
+  "FromAddress": "string",
+  "Recipient": "string",
+  "TimeStamp": "string",
+  "ToAddress": "string",
+  "application": "string",
+  "attachments": "string",
+  "bccaddress": "string",
+  "body": "string",
+  "ccaddress": "string",
+  "contentType": "string",
+  "failedEmailAddress": "string",
+  "fromAddress": "string",
+  "msgId": "string",
+  "recipient": "string",
+  "subject": "string",
+  "timeStamp": "string",
+  "type": "string"
+}
