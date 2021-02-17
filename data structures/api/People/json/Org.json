@@ -1,0 +1,24 @@
+{
+  "childOrg": [
+    null
+  ],
+  "companyCode": "string",
+  "managerId": "string",
+  "members": [
+    {
+      "userID": "string"
+    }
+  ],
+  "membersOnly": [
+    {
+      "userID": "string"
+    }
+  ],
+  "orgCode": "string",
+  "orgId": "string",
+  "orgTitle": "string",
+  "orgsOnly": [
+    "string"
+  ],
+  "parentOrgCode": "string"
+}
