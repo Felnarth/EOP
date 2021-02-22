@@ -1,5 +1,6 @@
 ﻿import GridLayout from 'react-grid-layout';
 import React, { Component } from 'react';
+import "../css/styles.css";
 
 export class TestGridComp extends Component {
     render() {
