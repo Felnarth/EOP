@@ -1,52 +1,55 @@
-import React, { Component } from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import React, { useEffect } from 'react';
+import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './NavMenu.css';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
 
-export class NavMenu extends Component {
-    static displayName = NavMenu.name;
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+}));
 
-    constructor(props) {
-        super(props);
+export default function NavMenu(props) {
+    const classes = useStyles();
 
-        this.toggleNavbar = this.toggleNavbar.bind(this);
-        this.state = {
-            collapsed: true
-        };
-    }
+    useEffect(() => {
+        //console.log(props.darkState);
+    }, [props.darkState]);
 
-    toggleNavbar() {
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
-    }
-
-    render() {
-        return (
-            <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
-                    <Container>
-                        <NavbarBrand tag={Link} to="/">EOP</NavbarBrand>
-                        <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/gridComp">Test Grid Component</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-            </header>
-        );
-    }
+    return (
+        <AppBar position="static">
+            <Toolbar>
+                <Switch
+                    checked={props.darkState}
+                    onChange={props.changeTheme}
+                />
+                <Typography variant="h6" className={classes.title}>
+                    Employee Oversight Portal
+                </Typography>
+                <Button >
+                    <NavLink tag={Link} to="/"><Typography variant="body1" style={{color: "white"}}>Home</Typography></NavLink>
+                </Button>
+                <Button >
+                    <NavLink tag={Link} to="/counter"><Typography variant="body1" style={{ color: "white" }}>Counter</Typography></NavLink>
+                </Button>
+                <Button color="inherit">
+                    <NavLink tag={Link} to="/fetch-data"><Typography variant="body1" style={{ color: "white" }}>Fetch Data</Typography></NavLink>
+                </Button>
+                <Button color="inherit">
+                    <NavLink tag={Link} to="/gridComp"><Typography variant="body1" style={{ color: "white" }}>Test Grid Component</Typography></NavLink>
+                </Button>
+            </Toolbar>
+        </AppBar>
+    );
 }

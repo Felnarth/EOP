@@ -1,18 +1,31 @@
-import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import { NavMenu } from './NavMenu';
+import React, { useState } from 'react';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import NavMenu from './NavMenu';
 
-export class Layout extends Component {
-  static displayName = Layout.name;
+export default function Layout(props) {
 
-  render () {
+    const [darkState, setDarkState] = useState(false);
+    const palletType = darkState ? "dark" : "light";
+
+    const darkTheme = createMuiTheme({
+        palette: {
+            type: palletType,
+        }
+    });
+
+    const handleThemeChange = () => {
+        setDarkState(!darkState);
+    };
+
     return (
-      <div>
-        <NavMenu />
-        <Container>
-          {this.props.children}
-        </Container>
-      </div>
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <NavMenu darkState={darkState} changeTheme={handleThemeChange}/>
+            <Container>
+                {props.children}
+            </Container>
+        </ThemeProvider>
     );
-  }
 }
