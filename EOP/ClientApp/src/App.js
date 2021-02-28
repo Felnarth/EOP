@@ -6,6 +6,7 @@ import { FetchData } from './pages/FetchData';
 import { Counter } from './pages/Counter';
 import { TestGridComp } from './components/TestGridComp';
 import TOCFullscreen from './pages/TOCFullscreen';
+import OrgChartFullscreen from './pages/OrgChartFullscreen';
 import './custom.css'
 
 
@@ -20,6 +21,7 @@ export default class App extends Component {
                 <Route path='/fetch-data' component={FetchData} />
                 <Route path='/gridComp' component={TestGridComp} />
                 <Route path='/TOCFullscreen' component={TOCFullscreen} />
+                <Route path='/OrgChartFullscreen' component={OrgChartFullscreen} />
             </Layout>
         );
     }
