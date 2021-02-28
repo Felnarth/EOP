@@ -1,88 +1,76 @@
-﻿import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { AppBar, Box, Card, CardContent, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
+﻿import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { makeStyles } from '@material-ui/core/styles';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import '../css/react-big-calendar.css'
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={'simple-tabpanel-${index}'}
-            aria-labelledby={'simple-tab-${index}'}
-            {...other}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: 'simple-tab-${index}',
-        'aria-controls': 'simple-tabpanel-${index}',
-    };
-}
+const localizer = momentLocalizer(moment);
 
 const useStyles = makeStyles((theme) => ({
-    cardRoot: {
+    root: {
         height: "100%"
     },
-    tabRoot: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
+    cardHeader: {
+        height: "15%"
+    },
+    cardContent: {
+        height: "85%"
     }
 }));
 
-export default function TOCWidget() {
+export default function TOCWidget(props) {
     const classes = useStyles();
 
-    const [tabNum, setTabNum] = useState(0);
+    useEffect(() => {
+        //console.log(props.isStatic)
+    }, [props.isStatic]);
 
-    const handleTabSwitch = (event, newValue) => {
-        setTabNum(newValue);
-    };
+    const MyEvents = [
+        {
+            id: 0,
+            title: 'All Day Event very long title',
+            allDay: true,
+            start: new Date(2021, 1, 23),
+            end: new Date(2021, 1, 24),
+        }
+    ];
+
+    const handleNavClick = () => {
+        //window.open("/TOCFullscreen");
+        window.location.href = "/TOCFullscreen";
+    }
 
     return (
-        <Card variant="outlined" className={classes.cardRoot}>
-            <CardContent>
-                <div className={classes.tabRoot}>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Tabs
-                                value={tabNum}
-                                onChange={handleTabSwitch}
-                                aria-label="simple tabs example"
-                                centered
-                            >
-                                <Tab label="Item One" {...a11yProps(0)} />
-                                <Tab label="Item Two" {...a11yProps(1)} />
-                                <Tab label="Item Three" {...a11yProps(2)} />
-                            </Tabs>
-                        </Toolbar>
-                    </AppBar>
-                    <TabPanel value={tabNum} index={0}>
-                        Item One
-                    </TabPanel>
-                    <TabPanel value={tabNum} index={1}>
-                        Item Two
-                    </TabPanel>
-                    <TabPanel value={tabNum} index={2}>
-                            Item Three
-                    </TabPanel>
-                </div>
+        <Card variant="outlined" className={classes.root}>
+            <CardHeader
+                avatar={
+                    <FormControl component="fieldset">
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={props.isStatic}
+                                    onChange={props.toggleStatic}
+                                />
+                            }
+                            label="locked:"
+                            labelPlacement="start"
+                        />
+                    </FormControl>
+                }
+                action={
+                    <IconButton area-label="fullscreen" onClick={handleNavClick}>
+                        <FullscreenIcon />
+                    </IconButton>
+                }
+                className={classes.cardHeader}
+            />
+            <CardContent className={classes.cardContent}>
+                <Calendar
+                    events={MyEvents}
+                    localizer={localizer}
+                />
             </CardContent>
         </Card>
     );

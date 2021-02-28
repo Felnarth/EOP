@@ -5,8 +5,9 @@ import Home from './pages/Home';
 import { FetchData } from './pages/FetchData';
 import { Counter } from './pages/Counter';
 import { TestGridComp } from './components/TestGridComp';
-
+import TOCFullscreen from './pages/TOCFullscreen';
 import './custom.css'
+
 
 export default class App extends Component {
     static displayName = App.name;
@@ -18,6 +19,7 @@ export default class App extends Component {
                 <Route path='/counter' component={Counter} />
                 <Route path='/fetch-data' component={FetchData} />
                 <Route path='/gridComp' component={TestGridComp} />
+                <Route path='/TOCFullscreen' component={TOCFullscreen} />
             </Layout>
         );
     }
