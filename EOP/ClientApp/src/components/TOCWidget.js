@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import '../css/react-big-calendar.css'
+import TOCCustomToolbar from './TOCCustomToolbar';
 
 const localizer = momentLocalizer(moment);
 
@@ -42,6 +43,10 @@ export default function TOCWidget(props) {
         window.location.href = "/TOCFullscreen";
     }
 
+    let components = {
+        toolbar: TOCCustomToolbar
+    };
+
     return (
         <Card variant="outlined" className={classes.root}>
             <CardHeader
@@ -70,6 +75,7 @@ export default function TOCWidget(props) {
                 <Calendar
                     events={MyEvents}
                     localizer={localizer}
+                    components={components}
                 />
             </CardContent>
         </Card>
