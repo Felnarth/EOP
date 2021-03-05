@@ -37,6 +37,13 @@ const styles = theme => ({
         flexGrow: 1,
         padding: "0 10px",
         textAlign: "center"
+    },
+    navButtons: {
+        background: 'radial-gradient(circle, rgba(242,234,7,1) 38%, rgba(230,211,11,1) 54%, rgba(245,240,6,1) 79%)',
+        borderColor: 'black'
+    },
+    buttonText: {
+        color: "black"
     }
 });
 
@@ -47,18 +54,18 @@ class TOCCustomToolbar extends Toolbar {
             <AppBar position="static">
                 <MUIToolbar classNames={classes.toolbar}>
                     <ButtonGroup>
-                        <Button type="button" onClick={() => this.navigate('TODAY')} >
-                            <Typography variant="subtitle1" style={{ color: "white" }}>
+                        <Button type="button" onClick={() => this.navigate('TODAY')} className={classes.navButtons}>
+                            <Typography variant="subtitle1" className={classes.buttonText}>
                                 Today
                             </Typography>
                         </Button>
-                        <Button type="button" onClick={() => this.navigate('PREV')}>
-                            <Typography variant="subtitle1" style={{ color: "white" }}>
+                        <Button type="button" onClick={() => this.navigate('PREV')} className={classes.navButtons}>
+                            <Typography variant="subtitle1" className={classes.buttonText}>
                                 Prev
                             </Typography>
                         </Button>
-                        <Button type="button" onClick={() => this.navigate('NEXT')}>
-                            <Typography variant="subtitle1" style={{ color: "white" }}>
+                        <Button type="button" onClick={() => this.navigate('NEXT')} className={classes.navButtons}>
+                            <Typography variant="subtitle1" className={classes.buttonText}>
                                 Next
                             </Typography>
                         </Button>
@@ -73,16 +80,17 @@ class TOCCustomToolbar extends Toolbar {
     viewNamesGroup(messages) {
         let viewNames = this.props.views
         const view = this.props.view
+        const { classes } = this.props;
 
         if (viewNames.length > 1) {
             return viewNames.map(name => (
                 <Button
                     type="button"
                     key={name}
-                    className={clsx({ 'rbc-active': view === name })}
+                    className={classes.navButtons}
                     onClick={this.view.bind(null, name)}
                 >
-                    <Typography variant="subtitle1" style={{ color: "white" }}>
+                    <Typography variant="subtitle1" className={classes.buttonText}>
                         {messages[name]}
                     </Typography>
                 </Button>

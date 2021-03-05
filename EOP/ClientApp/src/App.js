@@ -17,11 +17,10 @@ export default class App extends Component {
         return (
             <Layout>
                 <Route exact path='/' component={Home} />
-                <Route path='/counter' component={Counter} />
-                <Route path='/fetch-data' component={FetchData} />
-                <Route path='/gridComp' component={TestGridComp} />
-                <Route path='/TOCFullscreen' component={TOCFullscreen} />
-                <Route path='/OrgChartFullscreen' component={OrgChartFullscreen} />
+                <Route exact path='/EOP' component={Home} />
+                <Route path='/EOP/gridComp' component={TestGridComp} />
+                <Route path='/EOP/TOCFullscreen' component={TOCFullscreen} />
+                <Route path='/EOP/OrgChartFullscreen' component={OrgChartFullscreen} />
             </Layout>
         );
     }

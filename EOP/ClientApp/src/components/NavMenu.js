@@ -38,16 +38,10 @@ export default function NavMenu(props) {
                     Employee Oversight Portal
                 </Typography>
                 <Button >
-                    <NavLink tag={Link} to="/"><Typography variant="body1" style={{color: "white"}}>Home</Typography></NavLink>
-                </Button>
-                <Button >
-                    <NavLink tag={Link} to="/counter"><Typography variant="body1" style={{ color: "white" }}>Counter</Typography></NavLink>
+                    <NavLink tag={Link} to="/EOP"><Typography variant="body1" style={{color: "white"}}>Home</Typography></NavLink>
                 </Button>
                 <Button color="inherit">
-                    <NavLink tag={Link} to="/fetch-data"><Typography variant="body1" style={{ color: "white" }}>Fetch Data</Typography></NavLink>
-                </Button>
-                <Button color="inherit">
-                    <NavLink tag={Link} to="/gridComp"><Typography variant="body1" style={{ color: "white" }}>Test Grid Component</Typography></NavLink>
+                    <NavLink tag={Link} to="/EOP/gridComp"><Typography variant="body1" style={{ color: "white" }}>Test Grid Component</Typography></NavLink>
                 </Button>
             </Toolbar>
         </AppBar>

@@ -11,13 +11,16 @@ const localizer = momentLocalizer(moment);
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: "100%"
+        height: '100%'
     },
     cardHeader: {
-        height: "15%"
+        height: '15%'
     },
     cardContent: {
-        height: "85%"
+        height: '85%'
+    },
+    title: {
+        textAlign: "center"
     }
 }));
 
@@ -39,8 +42,7 @@ export default function TOCWidget(props) {
     ];
 
     const handleNavClick = () => {
-        //window.open("/TOCFullscreen");
-        window.location.href = "/TOCFullscreen";
+        window.location.href = "/EOP/TOCFullscreen";
     }
 
     let components = {
@@ -68,6 +70,9 @@ export default function TOCWidget(props) {
                     <IconButton area-label="fullscreen" onClick={handleNavClick}>
                         <FullscreenIcon />
                     </IconButton>
+                }
+                title={
+                    <Typography variant="h6" className={classes.title}>Time Off Calendar Widget</Typography>
                 }
                 className={classes.cardHeader}
             />

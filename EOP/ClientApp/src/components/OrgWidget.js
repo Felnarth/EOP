@@ -1,8 +1,9 @@
 ﻿import React, { useState, useEffect } from 'react';
 import OrganizationChart from "@dabeng/react-orgchart";
-import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton} from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import '../css/react-big-calendar.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -12,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
         height: "15%"
     },
     cardContent: {
-        height: "100%"
+        height: "85%"
+    },
+    title: {
+        textAlign: "center"
     }
 }));
 
@@ -25,7 +29,7 @@ export default function PanZoomChart(props){
 
     const handleNavClick = () => {
         //window.open("/OrgChartFullscreen");
-        window.location.href = "/OrgChartFullscreen";
+        window.location.href = "/EOP/OrgChartFullscreen";
     }
 
     const ds = {
@@ -84,14 +88,14 @@ export default function PanZoomChart(props){
                         <FullscreenIcon />
                     </IconButton>
                 }
+                title={
+                    <Typography variant="h6" className={classes.title}>Org Chart Widget</Typography>
+                }
                 className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>
-                <OrganizationChart datasource={ds} pan={true} zoom={true} />
+                <OrganizationChart datasource={ds} pan={true} zoom={true} containerClass="orgChartCustomClass"/>
             </CardContent>
-
-
         </Card>
     );
 };
-

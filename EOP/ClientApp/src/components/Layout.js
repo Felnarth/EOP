@@ -7,7 +7,8 @@ import NavMenu from './NavMenu';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: "800px"
+        height: "800px",
+        maxWidth: "1600px"
     }
 }));
 
