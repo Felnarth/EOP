@@ -7,6 +7,7 @@ import { Counter } from './pages/Counter';
 import { TestGridComp } from './components/TestGridComp';
 import TOCFullscreen from './pages/TOCFullscreen';
 import OrgChartFullscreen from './pages/OrgChartFullscreen';
+import TrainingFullscreen from './pages/TrainingFullscreen';
 import './custom.css'
 
 
@@ -21,6 +22,7 @@ export default class App extends Component {
                 <Route path='/EOP/gridComp' component={TestGridComp} />
                 <Route path='/EOP/TOCFullscreen' component={TOCFullscreen} />
                 <Route path='/EOP/OrgChartFullscreen' component={OrgChartFullscreen} />
+                <Route path='/EOP/TrainingFullscreen' component={TrainingFullscreen} />
             </Layout>
         );
     }

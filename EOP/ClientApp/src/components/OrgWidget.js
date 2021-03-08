@@ -3,7 +3,6 @@ import OrganizationChart from "@dabeng/react-orgchart";
 import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import '../css/react-big-calendar.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
