@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import OrganizationChart from "@dabeng/react-orgchart";
-import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography} from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography } from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpen from '@material-ui/icons/LockOpen';
 import { makeStyles } from '@material-ui/core/styles';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 
@@ -33,34 +35,34 @@ export default function PanZoomChart(props){
 
     const ds = {
         id: "n1",
-        name: "Lao Lao",
+        name: "Tom Brown",
         title: "general manager",
         children: [
-            { id: "n2", name: "Bo Miao", title: "department manager" },
+            { id: "n2", name: "Lind Mill", title: "department manager" },
             {
                 id: "n3",
-                name: "Su Miao",
+                name: "Cindy Simms",
                 title: "department manager",
                 children: [
-                    { id: "n4", name: "Tie Hua", title: "senior engineer" },
+                    { id: "n4", name: "Tia Sunny", title: "senior engineer" },
                     {
                         id: "n5",
-                        name: "Hei Hei",
+                        name: "Kyle Kyleson",
                         title: "senior engineer",
                         children: [
                             { id: "n6", name: "Dan Dan", title: "engineer" },
-                            { id: "n7", name: "Xiang Xiang", title: "engineer" }
+                            { id: "n7", name: "Bob Bob", title: "engineer" }
                         ]
                     },
-                    { id: "n8", name: "Pang Pang", title: "senior engineer" }
+                    { id: "n8", name: "Jeffer Jefferson", title: "senior engineer" }
                 ]
             },
-            { id: "n9", name: "Hong Miao", title: "department manager" },
+            { id: "n9", name: "Billy Joel", title: "department manager" },
             {
                 id: "n10",
-                name: "Chun Miao",
+                name: "Sarah Williams",
                 title: "department manager",
-                children: [{ id: "n11", name: "Yue Yue", title: "senior engineer" }]
+                children: [{ id: "n11", name: "Cristina", title: "senior engineer" }]
             }
         ]
     };
@@ -70,16 +72,9 @@ export default function PanZoomChart(props){
             <CardHeader
                 avatar={
                     <FormControl component="fieldset">
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={props.isStatic}
-                                    onChange={props.toggleStatic}
-                                />
-                            }
-                            label="locked:"
-                            labelPlacement="start"
-                        />
+                        <IconButton area-label="lock" onClick={props.toggleStatic}>
+                            {(props.isStatic) ? <LockIcon /> : <LockOpen />}
+                        </IconButton>
                     </FormControl>
                 }
                 action={

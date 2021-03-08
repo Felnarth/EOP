@@ -2,6 +2,8 @@
 import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { makeStyles } from '@material-ui/core/styles';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpen from '@material-ui/icons/LockOpen';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import '../css/react-big-calendar.css'
@@ -29,6 +31,7 @@ export default function TOCWidget(props) {
 
     useEffect(() => {
         //console.log(props.isStatic)
+        //fetch request to get events from TOC calendar database
     }, [props.isStatic]);
 
     const MyEvents = [
@@ -36,8 +39,8 @@ export default function TOCWidget(props) {
             id: 0,
             title: 'All Day Event very long title',
             allDay: true,
-            start: new Date(2021, 1, 23),
-            end: new Date(2021, 1, 24),
+            start: new Date(2021, 2, 23),
+            end: new Date(2021, 2, 24),
         }
     ];
 
@@ -54,16 +57,9 @@ export default function TOCWidget(props) {
             <CardHeader
                 avatar={
                     <FormControl component="fieldset">
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={props.isStatic}
-                                    onChange={props.toggleStatic}
-                                />
-                            }
-                            label="locked:"
-                            labelPlacement="start"
-                        />
+                        <IconButton area-label="lock" onClick={props.toggleStatic}>
+                            {(props.isStatic) ? <LockIcon /> : <LockOpen />}
+                        </IconButton>
                     </FormControl>
                 }
                 action={

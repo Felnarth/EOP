@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Layout(props) {
 
-    const [darkState, setDarkState] = useState(false);
+    const [darkState, setDarkState] = useState(true);
     const palletType = darkState ? "dark" : "light";
 
     const classes = useStyles();

@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography, TablePagination } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpen from '@material-ui/icons/LockOpen';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { DataGrid } from '@material-ui/data-grid';
 import SearchBar from "material-ui-search-bar";
@@ -75,16 +77,9 @@ export default function TrainingTable(props) {
             <CardHeader
                 avatar={
                     <FormControl component="fieldset">
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={props.isStatic}
-                                    onChange={props.toggleStatic}
-                                />
-                            }
-                            label="locked:"
-                            labelPlacement="start"
-                        />
+                        <IconButton area-label="lock" onClick={props.toggleStatic}>
+                            {(props.isStatic) ? <LockIcon /> : <LockOpen />}
+                        </IconButton>
                     </FormControl>
                 }
                 action={

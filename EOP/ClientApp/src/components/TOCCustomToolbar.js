@@ -52,7 +52,7 @@ class TOCCustomToolbar extends Toolbar {
         const { classes } = this.props;
         return (
             <AppBar position="static">
-                <MUIToolbar classNames={classes.toolbar}>
+                <MUIToolbar className={classes.toolbar}>
                     <ButtonGroup>
                         <Button type="button" onClick={() => this.navigate('TODAY')} className={classes.navButtons}>
                             <Typography variant="subtitle1" className={classes.buttonText}>

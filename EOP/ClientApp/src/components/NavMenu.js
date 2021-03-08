@@ -40,9 +40,6 @@ export default function NavMenu(props) {
                 <Button >
                     <NavLink tag={Link} to="/EOP"><Typography variant="body1" style={{color: "white"}}>Home</Typography></NavLink>
                 </Button>
-                <Button color="inherit">
-                    <NavLink tag={Link} to="/EOP/gridComp"><Typography variant="body1" style={{ color: "white" }}>Test Grid Component</Typography></NavLink>
-                </Button>
             </Toolbar>
         </AppBar>
     );
