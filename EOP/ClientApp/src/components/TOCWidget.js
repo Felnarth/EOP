@@ -1,9 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
+﻿import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ButtonGroup, Card, CardContent, CardHeader, FormControl, IconButton, Typography } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
+import SyncIcon from '@material-ui/icons/Sync';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import '../css/react-big-calendar.css'
@@ -28,21 +30,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TOCWidget(props) {
     const classes = useStyles();
+    const [currentTime, setCurrentTime] = React.useState(moment().format('h:mm A'));
+    const [events, setEvents] = React.useState([]);
+
+    function GetEvents() {
+        fetch('./api/Dashboard/GetEvents')
+            .then(response => response.json())
+            .then(data => setEvents(data))
+            .then(setCurrentTime(moment().format('h:mm A')))
+    }
 
     useEffect(() => {
-        //console.log(props.isStatic)
-        //fetch request to get events from TOC calendar database
+        //get events to populate calendar
+        GetEvents();
     }, [props.isStatic]);
 
-    const MyEvents = [
-        {
-            id: 0,
-            title: 'All Day Event very long title',
-            allDay: true,
-            start: new Date(2021, 2, 23),
-            end: new Date(2021, 2, 24),
-        }
-    ];
+    //const MyEvents = [
+    //    {
+    //        id: 0,                                      //ID
+    //        userId: "j1023",                            //USERID
+    //        title: "j1023" + " - " + "Long Vacation",   //EVENT_TITLE
+    //        start: new Date(2021, 3, 5),                //EVENT_START
+    //        end: new Date(2021, 3, 9),                  //EVENT_START
+    //    }
+    //];
 
     const handleNavClick = () => {
         window.location.href = "/EOP/TOCFullscreen";
@@ -63,9 +74,16 @@ export default function TOCWidget(props) {
                     </FormControl>
                 }
                 action={
-                    <IconButton area-label="fullscreen" onClick={handleNavClick}>
-                        <FullscreenIcon />
-                    </IconButton>
+                    <ButtonGroup>
+                        <IconButton area-label="fullscreen">
+                            <Link to="/EOP/TOCFullscreen"><FullscreenIcon /></Link>
+                        </IconButton>
+                        <IconButton area-label="sync" onClick={GetEvents}>
+                            <SyncIcon />
+                            <Typography variant="caption">As of<br />{currentTime}</Typography>
+                            <SyncIcon />
+                        </IconButton>
+                    </ButtonGroup>
                 }
                 title={
                     <Typography variant="h6" className={classes.title}>Time Off Calendar Widget</Typography>
@@ -74,7 +92,7 @@ export default function TOCWidget(props) {
             />
             <CardContent className={classes.cardContent}>
                 <Calendar
-                    events={MyEvents}
+                    events={events}
                     localizer={localizer}
                     components={components}
                 />

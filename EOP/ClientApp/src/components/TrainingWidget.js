@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography, TablePagination } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, FormControl, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
@@ -83,8 +84,8 @@ export default function TrainingTable(props) {
                     </FormControl>
                 }
                 action={
-                    <IconButton area-label="fullscreen" onClick={handleNavClick}>
-                        <FullscreenIcon />
+                    <IconButton area-label="fullscreen">
+                        <Link to="/EOP/TrainingFullscreen"><FullscreenIcon /></Link>
                     </IconButton>
                 }
                 title={

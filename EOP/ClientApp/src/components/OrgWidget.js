@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import OrganizationChart from "@dabeng/react-orgchart";
 import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
@@ -67,6 +68,10 @@ export default function PanZoomChart(props){
         ]
     };
 
+    OrganizationChart.zoomHandler = (ev) => {
+        console.log("hello");
+    }
+
     return (
         <Card variant="outlined" className={classes.root}>
             <CardHeader
@@ -78,8 +83,8 @@ export default function PanZoomChart(props){
                     </FormControl>
                 }
                 action={
-                    <IconButton area-label="fullscreen" onClick={handleNavClick}>
-                        <FullscreenIcon />
+                    <IconButton area-label="fullscreen">
+                        <Link to="/EOP/OrgChartFullscreen"><FullscreenIcon /></Link>
                     </IconButton>
                 }
                 title={
