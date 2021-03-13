@@ -29,11 +29,6 @@ export default function PanZoomChart(props){
         //console.log(props.isStatic)
     }, [props.isStatic]);
 
-    const handleNavClick = () => {
-        //window.open("/OrgChartFullscreen");
-        window.location.href = "/EOP/OrgChartFullscreen";
-    }
-
     const ds = {
         id: "n1",
         name: "Tom Brown",
