@@ -30,10 +30,10 @@ export default function PanZoomChart(props){
     }, [props.isStatic]);
 
     const ds = {
-        id: "n1",
-        name: "Tom Brown",
-        title: "general manager",
-        children: [
+        id: "n1", //userId
+        name: "Tom Brown", //fullname
+        title: "general manager", //org title
+        children: [ //members
             { id: "n2", name: "Lind Mill", title: "department manager" },
             {
                 id: "n3",
@@ -63,10 +63,6 @@ export default function PanZoomChart(props){
         ]
     };
 
-    OrganizationChart.zoomHandler = (ev) => {
-        console.log("hello");
-    }
-
     return (
         <Card variant="outlined" className={classes.root}>
             <CardHeader
@@ -88,7 +84,7 @@ export default function PanZoomChart(props){
                 className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>
-                <OrganizationChart datasource={ds} pan={true} zoom={true} containerClass="orgChartCustomClass"/>
+                <OrganizationChart datasource={ds} pan={true} zoom={false} containerClass="orgChartCustomClass"/>
             </CardContent>
         </Card>
     );

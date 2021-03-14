@@ -20,16 +20,6 @@ export default function Home() {
         { i: 'd', x: 8, y: 23, w: 8, h: 14, minW: 8, static: true }
     ]);
 
-    const handleOrgChartEnter = () => {
-        document.body.style.overflow = "hidden";
-        //obj[0].style.margin = "auto 17px auto 17px"; //size of the scrollbar in each browser
-    }
-
-    const handleOrgChartLeave = () => {
-        document.body.style.overflow = "auto";
-        //obj[0].style.margin = "auto";
-    }
-
     function toggleWidgetStatic(layout, key) {
         console.log("set " + key + " to static");
         var newLayout = layout.map(l => {
@@ -63,7 +53,7 @@ export default function Home() {
             <div key="a">
                 <TOCWidget isStatic={isTOCWidgetStatic} toggleStatic={() => toggleWidgetStatic(layout, "a")} />
             </div>
-            <div key="b" onMouseEnter={handleOrgChartEnter} onMouseLeave={handleOrgChartLeave}>
+            <div key="b">
                 <OrgWidget isStatic={isOrgWidgetStatic} toggleStatic={() => toggleWidgetStatic(layout, "b")} />
             </div>
             <div key="c">

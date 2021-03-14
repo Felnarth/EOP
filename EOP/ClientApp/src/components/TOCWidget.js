@@ -1,6 +1,6 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ButtonGroup, Card, CardContent, CardHeader, FormControl, IconButton, Typography } from '@material-ui/core';
+import { ButtonGroup, Card, CardContent, CardHeader, Dialog, FormControl, IconButton, Typography } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
@@ -10,6 +10,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import '../css/react-big-calendar.css'
 import TOCCustomToolbar from './TOCCustomToolbar';
+import TOCEventDialog from './TOCEventDialog';
 
 const localizer = momentLocalizer(moment);
 
@@ -32,6 +33,8 @@ export default function TOCWidget(props) {
     const classes = useStyles();
     const [currentTime, setCurrentTime] = React.useState(moment().format('h:mm A'));
     const [events, setEvents] = React.useState([]);
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [dialogEventObj, setDialogEventObj] = React.useState();
 
     function GetEvents() {
         fetch('./api/Dashboard/GetEvents')
@@ -55,9 +58,14 @@ export default function TOCWidget(props) {
     //    }
     //];
 
-    const handleNavClick = () => {
-        window.location.href = "/EOP/TOCFullscreen";
-    }
+    const handleClickOpen = (e) => {
+        setDialogEventObj(e);
+        setIsDialogOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    };
 
     let components = {
         toolbar: TOCCustomToolbar
@@ -95,8 +103,10 @@ export default function TOCWidget(props) {
                     events={events}
                     localizer={localizer}
                     components={components}
+                    onSelectEvent={handleClickOpen}
                 />
             </CardContent>
+            <TOCEventDialog isOpen={isDialogOpen} setClosed={handleClose} eventObj={dialogEventObj}/>
         </Card>
     );
 }
