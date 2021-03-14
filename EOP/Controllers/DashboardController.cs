@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace EOP.Controllers
 {
+    [Route("EOP/api/[controller]")]
     [Route("api/[controller]")]
     [ApiController]
     public class DashboardController : ControllerBase
