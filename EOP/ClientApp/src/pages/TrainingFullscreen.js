@@ -1,9 +1,58 @@
 ﻿import React, { useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
-import { Paper } from '@material-ui/core';
-import SearchBar from "material-ui-search-bar";
+import { Paper, AppBar, Tabs, Tab, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import SearchBar from 'material-ui-search-bar';
+import PropTypes from 'prop-types';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3} height='95%'>
+                    {children}
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
+        height: '100%'
+    },
+}));
 
 export default function TrainingFullscreen() {
+    const classes = useStyles();
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -45,13 +94,24 @@ export default function TrainingFullscreen() {
     };
 
     return (
-        <Paper style={{ marginTop: '5px', height: "100%" }}>
-            <SearchBar
-                value={searched}
-                onChange={(searchVal) => requestSearch(searchVal)}
-                onCancelSearch={() => cancelSearch()}
-            />
-            <DataGrid rows={rows} columns={columns} />
+        <Paper className={classes.root} style={{ marginTop: '5px'}}>
+            <AppBar position="static">
+                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                    <Tab label="Courses" {...a11yProps(0)} />
+                    <Tab label="History" {...a11yProps(1)} />
+                </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0} className={classes.root}>
+                <SearchBar
+                    value={searched}
+                    onChange={(searchVal) => requestSearch(searchVal)}
+                    onCancelSearch={() => cancelSearch()}
+                />
+                <DataGrid rows={rows} columns={columns} />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                Item Two
+            </TabPanel>
         </Paper>
     );
 }

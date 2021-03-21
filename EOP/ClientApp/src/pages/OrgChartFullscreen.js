@@ -13,6 +13,8 @@ export default function OrgChartFullscreen(props) {
         }
     );
 
+    const [dialogObj, setDialogObj] = React.useState();
+
     function GetOrgs() {
         fetch('./api/Dashboard/GetOrgs')
             .then(response => response.json())
@@ -25,26 +27,9 @@ export default function OrgChartFullscreen(props) {
     }, [props.isStatic]);
 
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-    
-    //const ds = {
-    //    id: "E4000", 
-    //    name: "ASDF Org", 
-    //        children: [ 
-    //        { id: "E4100", name: "QWERTY Org",
-    //                children: [
-    //                    { id: "E4110", name: "ZXCV Org"}
-    //                ]
-    //        },
-    //        { id: "E4200", name: "YTREWQ Org",
-    //            children: [
-    //                { id: "E4210", name: "VBNM Org" },
-    //                { id: "E4220", name: "MNBV Org" }
-    //            ]
-    //        }
-    //    ]
-    //};
 
     const handleClickOpen = (e) => {
+        setDialogObj(e);
         setIsDialogOpen(true);
     }
 
@@ -55,7 +40,7 @@ export default function OrgChartFullscreen(props) {
     return (
         <Paper style={{ height: "90%" }}>
             <OrganizationChart datasource={orgs} pan={true} zoom={true} onClickNode={handleClickOpen}/>
-            <OrgChartWidgetDialog isOpen={isDialogOpen} setClosed={handleClose} />
+            <OrgChartWidgetDialog isOpen={isDialogOpen} setClosed={handleClose} obj={dialogObj}/>
         </Paper>
     );
 }

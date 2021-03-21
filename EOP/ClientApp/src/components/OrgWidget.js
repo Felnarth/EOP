@@ -1,11 +1,12 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import OrganizationChart from "@dabeng/react-orgchart";
-import { Card, CardContent, CardHeader, Checkbox, FormControl, FormControlLabel, IconButton, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, FormControl, IconButton, Typography } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 import { makeStyles } from '@material-ui/core/styles';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import OrgChartWidgetDialog from '../components/OrgChartWidgetDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,42 +26,36 @@ const useStyles = makeStyles((theme) => ({
 export default function PanZoomChart(props){
     const classes = useStyles();
 
+    const [orgs, setOrgs] = React.useState(
+        {
+            id: "",
+            name: "",
+            children: []
+        }
+    );
+
+    const [dialogObj, setDialogObj] = React.useState();
+
+    function GetOrgs() {
+        fetch('./api/Dashboard/GetOrgs')
+            .then(response => response.json())
+            .then(data => setOrgs(data))
+    }
+
     useEffect(() => {
-        //console.log(props.isStatic)
+        //get orgs to populate orgchart
+        GetOrgs();
     }, [props.isStatic]);
 
-    const ds = {
-        id: "n1", //userId
-        name: "Tom Brown", //fullname
-        title: "general manager", //org title
-        children: [ //members
-            { id: "n2", name: "Lind Mill", title: "department manager" },
-            {
-                id: "n3",
-                name: "Cindy Simms",
-                title: "department manager",
-                children: [
-                    { id: "n4", name: "Tia Sunny", title: "senior engineer" },
-                    {
-                        id: "n5",
-                        name: "Kyle Kyleson",
-                        title: "senior engineer",
-                        children: [
-                            { id: "n6", name: "Dan Dan", title: "engineer" },
-                            { id: "n7", name: "Bob Bob", title: "engineer" }
-                        ]
-                    },
-                    { id: "n8", name: "Jeffer Jefferson", title: "senior engineer" }
-                ]
-            },
-            { id: "n9", name: "Billy Joel", title: "department manager" },
-            {
-                id: "n10",
-                name: "Sarah Williams",
-                title: "department manager",
-                children: [{ id: "n11", name: "Cristina", title: "senior engineer" }]
-            }
-        ]
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+
+    const handleClickOpen = (e) => {
+        setDialogObj(e);
+        setIsDialogOpen(true);
+    }
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
     };
 
     return (
@@ -84,7 +79,8 @@ export default function PanZoomChart(props){
                 className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>
-                <OrganizationChart datasource={ds} pan={true} zoom={false} containerClass="orgChartCustomClass"/>
+                <OrganizationChart datasource={orgs} pan={true} zoom={false} onClickNode={handleClickOpen} containerClass="orgChartCustomClass" />
+                <OrgChartWidgetDialog isOpen={isDialogOpen} setClosed={handleClose} obj={dialogObj}/>
             </CardContent>
         </Card>
     );
