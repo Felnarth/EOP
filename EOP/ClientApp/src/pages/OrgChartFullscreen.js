@@ -39,7 +39,7 @@ export default function OrgChartFullscreen(props) {
 
     return (
         <Paper style={{ height: "90%" }}>
-            <OrganizationChart datasource={orgs} pan={true} zoom={true} onClickNode={handleClickOpen}/>
+            <OrganizationChart datasource={orgs} pan={true} zoom={true} collapsible={false} onClickNode={handleClickOpen}/>
             <OrgChartWidgetDialog isOpen={isDialogOpen} setClosed={handleClose} obj={dialogObj}/>
         </Paper>
     );

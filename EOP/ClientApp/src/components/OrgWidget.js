@@ -79,7 +79,7 @@ export default function PanZoomChart(props){
                 className={classes.cardHeader}
             />
             <CardContent className={classes.cardContent}>
-                <OrganizationChart datasource={orgs} pan={true} zoom={false} onClickNode={handleClickOpen} containerClass="orgChartCustomClass" />
+                <OrganizationChart datasource={orgs} pan={true} zoom={false} collapsible={false} onClickNode={handleClickOpen} containerClass="orgChartCustomClass" />
                 <OrgChartWidgetDialog isOpen={isDialogOpen} setClosed={handleClose} obj={dialogObj}/>
             </CardContent>
         </Card>

@@ -3,47 +3,26 @@ import PropTypes from 'prop-types';
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import OrganizationChart from "@dabeng/react-orgchart";
-
-//const ds = {
-//    id: "n1", //userId
-//    name: "Tom Brown", //fullname
-//    title: "general manager", //org title
-//    children: [ //members
-//        { id: "n2", name: "Lind Mill", title: "department manager" },
-//        {
-//            id: "n3", name: "Cindy Simms", title: "department manager",
-//            children: [
-//                { id: "n4", name: "Tia Sunny", title: "senior engineer" },
-//                {
-//                    id: "n5", name: "Kyle Kyleson", title: "senior engineer",
-//                    children: [
-//                        { id: "n6", name: "Dan Dan", title: "engineer" },
-//                        { id: "n7", name: "Bob Bob", title: "engineer" }
-//                    ]
-//                },
-//                { id: "n8", name: "Jeffer Jefferson", title: "senior engineer" }
-//            ]
-//        },
-//        { id: "n9", name: "Billy Joel", title: "department manager" },
-//        {
-//            id: "n10", name: "Sarah Williams", title: "department manager",
-//            children: [
-//                { id: "n11", name: "Cristina", title: "senior engineer" }
-//            ]
-//        }
-//    ]
-//};
+import PersonDialog from '../components/PersonDialog';
 
 const useStyles = makeStyles({
     dialogPaper: {
-        width: "70%",
-        maxWidth: "fit-content"
+        //width: "70%",
+        //maxWidth: "fit-content"
     }
 });
 
 export default function OrgChartWidgetDialog(props) {
     const classes = useStyles();
-
+    const [dialogObj, setDialogObj] = React.useState();
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const handleClickOpen = (e) => {
+        setDialogObj(e);
+        setIsDialogOpen(true);
+    }
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    };
     const [persons, setPersons] = React.useState(
         {
             id: "",
@@ -52,22 +31,17 @@ export default function OrgChartWidgetDialog(props) {
         }
     );
 
-    //function GetPersons() {
-    //    fetch('./api/Dashboard/GetPersons')
-    //        .then(response => response.json())
-    //        .then(data => setPersons(data))
-    //}
-
     useEffect(() => {
         //get people to populate orgchart
         //GetPersons();
     }, [props.obj]);
 
     return (
-        <Dialog onClose={props.setClosed} aria-labelledby="simple-dialog-title" open={props.isOpen} classes={{ paper: classes.dialogPaper }}>
+        <Dialog onClose={props.setClosed} aria-labelledby="simple-dialog-title" fullWidth maxWidth='md' open={props.isOpen} classes={{ paper: classes.dialogPaper }}>
             <DialogTitle id="simple-dialog-title">{props?.obj?.id + " " + props?.obj?.name}</DialogTitle>
             <DialogContent>
-                <OrganizationChart datasource={props?.obj?.manager} pan={true} zoom={true} />
+                <OrganizationChart datasource={props?.obj?.manager} pan={true} zoom={true} collapsible={false} onClickNode={handleClickOpen}/>
+                <PersonDialog isOpen={isDialogOpen} setClosed={handleClose} obj={dialogObj} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.setClosed}>Close</Button>

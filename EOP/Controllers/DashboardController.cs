@@ -79,19 +79,22 @@ namespace EOP.Controllers
         [HttpGet("[action]")]
         public ActionResult<OrgObject> GetOrgs()
         {
-            //List<OrgObject> defaultOrgs = new List<OrgObject>();
-            return new OrgObject("E4000", "test", "ASDF Org", new PersonObject("N1", "Tom Joseph Brown", "General Manager", new List<PersonObject>(), "101A"), new List<OrgObject>()
+            return new OrgObject("E4000", "test", "ASDF Org", new PersonObject("N1", "Tom Brown", "General Manager", new List<PersonObject>(), "101A"), new List<OrgObject>()
             {
-                new OrgObject("E4100", "test", "QWERTY Org", new PersonObject("N2", "Lind Lorraine Mill", "Department Manager", new List<PersonObject>(), "102A"), new List<OrgObject>(){
-                    new OrgObject("E4110", "test", "ZXCV Org", new PersonObject("N4", "Tia Rachel Sunny", "Team Lead", new List<PersonObject>(){
-                        new PersonObject("N6", "Dan Robert Roberts", "Engineer", new List<PersonObject>(), "102C"),
-                        new PersonObject("N7", "Robert Reid Newman", "Engineer", new List<PersonObject>(), "102D")
+                new OrgObject("E4100", "test", "QWERTY Org", new PersonObject("N2", "Lind Mill", "Department Manager", new List<PersonObject>(){
+                    new PersonObject("N10", "Chris Riddle", "Assistant Manager", new List<PersonObject>(), "102E")
+                }, "102A"), new List<OrgObject>(){
+                    new OrgObject("E4110", "test", "ZXCV Org", new PersonObject("N4", "Tia Sunny", "Team Lead", new List<PersonObject>(){
+                        new PersonObject("N6", "Dan Roberts", "Engineer", new List<PersonObject>(), "102C"),
+                        new PersonObject("N7", "Robert Newman", "Engineer", new List<PersonObject>(), "102D")
                     }, "102B"), new List<OrgObject>())
                 }),
-                new OrgObject("E4200", "test", "YTREWQ Org", new PersonObject("N3", "Cindy Abigail Simms", "Department Manager", new List<PersonObject>(), "103A"), new List<OrgObject>(){
-                    new OrgObject("E4210", "test", "VBNM Org", new PersonObject("N5", "Jeffer Jefferson Holmes", "Team Lead", new List<PersonObject>(){
-                        new PersonObject("N8", "Andrew Lee Yates", "Engineer", new List<PersonObject>(), "103C"),
-                        new PersonObject("N9", "Nicholas Grant Wilkins", "Engineer", new List<PersonObject>(), "103D")
+                new OrgObject("E4200", "test", "YTREWQ Org", new PersonObject("N3", "Cindy Simms", "Department Manager", new List<PersonObject>(), "103A"), new List<OrgObject>(){
+                    new OrgObject("E4210", "test", "VBNM Org", new PersonObject("N5", "Jeffer Holmes", "Team Lead", new List<PersonObject>(){
+                        new PersonObject("N8", "Andrew Yates", "Senior Engineer", new List<PersonObject>(){
+                            new PersonObject("N11", "Jonathan Hendricks", "Junior Engineer", new List<PersonObject>(), "103C")
+                        }, "103C"),
+                        new PersonObject("N9", "Nicholas Wilkins", "Engineer", new List<PersonObject>(), "103D")
                     }, "103B"), new List<OrgObject>())
                 })
             });
@@ -101,7 +104,7 @@ namespace EOP.Controllers
         public ActionResult<PersonObject> GetPersons()
         {
             List<PersonObject> defaultPersons = new List<PersonObject>();
-            return new PersonObject("N2", "Lind Lorraine Mill", "Department Manager", new List<PersonObject>(), "102A");
+            return new PersonObject("N2", "Lind Mill", "Department Manager", new List<PersonObject>(), "102A");
         }
 
         [HttpGet("[action]")]
@@ -112,12 +115,28 @@ namespace EOP.Controllers
             defaultCourses.Add(new CourseObject("2", "ITS315", "Introduction to Networks", "Archive", "Networking fundamentals", "January 11 2021", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("3", "ITS350", "Information Systems & Security", "Archive", "Network security basics", "January 11 2021", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("4", "CSCI515", "Ethical Hacking", "Active", "Network penetration testing", "March 15 2021", "asdf", "qwerty"));
-            defaultCourses.Add(new CourseObject("5", "ITS455", "Digital Dorensics & Investigations", "Active", "Digital forensics for business & government", "March 15 2021", "asdf", "qwerty"));
+            defaultCourses.Add(new CourseObject("5", "ITS455", "Digital Forensics & Investigations", "Active", "Digital forensics for business & government", "March 15 2021", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("6", "BADM345", "Business Communications", "Archive", "Communication in business setting", "August 20 2020", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("7", "COMM190", "Introduction to Communications", "Archive", "Communication basics", "August 20 2020", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("8", "CSCI411", "Operating Systems", "Archive", "Windows & Linux system modeling", "August 20 2020", "asdf", "qwerty"));
             defaultCourses.Add(new CourseObject("9", "CSCI520", "Database Systems Design", "Archive", "Intro to databse concepts and SQL", "August 20 2020", "asdf", "qwerty"));
             return defaultCourses;
+        }
+
+        [HttpGet("[action]")]
+        public ActionResult<IEnumerable<HistoryObject>> GetHistory(string uid)
+        {
+            List<HistoryObject> defaultHistory = new List<HistoryObject>();
+            defaultHistory.Add(new HistoryObject("1", "N4", "CSCI590", "Capstone", "Active", "May 4 2021"));
+            defaultHistory.Add(new HistoryObject("2", "N4", "ITS315", "Introduction to Networks", "Archive", "March 7 2021"));
+            defaultHistory.Add(new HistoryObject("3", "N4", "ITS350", "Information Systems & Security", "Archive", "March 7 2021"));
+            defaultHistory.Add(new HistoryObject("4", "N3", "CSCI515", "Ethical Hacking", "Active", "May 4 2021"));
+            defaultHistory.Add(new HistoryObject("5", "N3", "ITS455", "Digital Forensics & Investigations", "Active", "May 4 2021"));
+            defaultHistory.Add(new HistoryObject("6", "N3", "BADM345", "Business Communications", "Archive", "December 18 2020"));
+            defaultHistory.Add(new HistoryObject("7", "N3", "COMM190", "Intro to Communications", "Archive", "December 18 2020"));
+            defaultHistory.Add(new HistoryObject("8", "N2", "CSCI411", "Operating Systems", "Archive", "December 18 2020"));
+            defaultHistory.Add(new HistoryObject("9", "N1", "CSCI520", "Databse Systems Design", "Archive", "December 18 2020"));
+            return defaultHistory.Where(e=>e.UserId==uid).ToList();
         }
 
     }
@@ -207,5 +226,26 @@ namespace EOP.Controllers
         public string AvailDate { get; set; }
         public string Content1 { get; set; }
         public string Content2 { get; set; }
+    }
+
+    public class HistoryObject
+    {
+        public HistoryObject(string id, string userId, string courseCode, string courseTitle, string statusText, string completeDate)
+        {
+            Id = id;
+            UserId = userId;
+            CourseCode = courseCode;
+            CourseTitle = courseTitle;
+            StatusText = statusText;
+            CompleteDate = completeDate;
+        }
+
+        //property fields
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string CourseCode { get; set; }
+        public string CourseTitle { get; set; }
+        public string StatusText { get; set; }
+        public string CompleteDate { get; set; }
     }
 }
