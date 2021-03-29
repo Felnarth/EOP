@@ -40,6 +40,9 @@ export default function NavMenu(props) {
                 <Button >
                     <NavLink tag={Link} to="/EOP"><Typography variant="body1" style={{color: "white"}}>Home</Typography></NavLink>
                 </Button>
+                <Button >
+                    <NavLink tag={Link} to="/EOP/Kanban"><Typography variant="body1" style={{ color: "white" }}>Kanban</Typography></NavLink>
+                </Button>
             </Toolbar>
         </AppBar>
     );

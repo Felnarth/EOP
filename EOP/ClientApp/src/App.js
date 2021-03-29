@@ -6,6 +6,7 @@ import TOCFullscreen from './pages/TOCFullscreen';
 import OrgChartFullscreen from './pages/OrgChartFullscreen';
 import TrainingFullscreen from './pages/TrainingFullscreen';
 import NotificationFullscreen from './pages/NotificationFullscreen';
+import Kanban from './pages/Kanban';
 import './custom.css'
 
 
@@ -17,6 +18,7 @@ export default class App extends Component {
             <Layout>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/EOP' component={Home} />
+                <Route path='/EOP/Kanban' component={Kanban} />
                 <Route path='/EOP/TOCFullscreen' component={TOCFullscreen} />
                 <Route path='/EOP/OrgChartFullscreen' component={OrgChartFullscreen} />
                 <Route path='/EOP/TrainingFullscreen' component={TrainingFullscreen} />

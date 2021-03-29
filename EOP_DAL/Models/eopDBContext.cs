@@ -15,6 +15,7 @@ namespace EOP_DAL.Models
         }
 
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<KanbanTask> KanbanTasks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,6 +51,25 @@ namespace EOP_DAL.Models
                 entity.Property(e => e.Title)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<KanbanTask>(entity =>
+            {
+                entity.ToTable("KanbanTask");
+
+                entity.HasKey(e => e.TaskId);
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.DueDate)
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.ForField)
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(10);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -6,6 +6,7 @@ import '../css/react-big-calendar.css'
 import { Card, CardContent, CardHeader, IconButton, Typography } from '@material-ui/core';
 import SyncIcon from '@material-ui/icons/Sync';
 import TOCCustomToolbar from '../components/TOCCustomToolbar';
+import TOCEventDialog from '../components/TOCEventDialog';
 
 const localizer = momentLocalizer(moment);
 
@@ -30,11 +31,19 @@ export default function TOCFullscreen() {
     const classes = useStyles();
     const [currentTime, setCurrentTime] = React.useState(moment().format('h:mm A'));
     const [events, setEvents] = React.useState([]);
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [dialogEventObj, setDialogEventObj] = React.useState();
 
     function GetEvents() {
         fetch('./api/Dashboard/GetEvents')
             .then(response => response.json())
-            .then(data => setEvents(data))
+            .then(data => {
+                data.forEach(item => {
+                    item.end = new Date(item.end);
+                    item.start = new Date(item.start);
+                });
+                setEvents(data)
+            })
             .then(setCurrentTime(moment().format('h:mm A')))
     }
 
@@ -42,6 +51,15 @@ export default function TOCFullscreen() {
         //get events to populate calendar
         GetEvents();
     }, []);
+
+    const handleClickOpen = (e) => {
+        setDialogEventObj(e);
+        setIsDialogOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsDialogOpen(false);
+    };
 
     let components = {
         toolbar: TOCCustomToolbar
@@ -67,8 +85,10 @@ export default function TOCFullscreen() {
                     events={events}
                     localizer={localizer}
                     components={components}
+                    onSelectEvent={handleClickOpen}
                 />
             </CardContent>
+            <TOCEventDialog isOpen={isDialogOpen} setClosed={handleClose} eventObj={dialogEventObj} />
         </Card>
     );
 }

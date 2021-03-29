@@ -54,13 +54,13 @@ export default function NotificationWidget(props) {
 
     //get notifciations fetch requests placed in function as it is called multiple times
     function getNotifications() {
-        fetch('./api/Dashboard/GetNotifications')
-            .then(response => response.json())
-            .then(data => setNotifications(data.sort(function (a, b) {
-                //oldest at the top, newest at the bottom
-                return new Date(a.dateFired) - new Date(b.dateFired);
-            })))
-            .then(setCurrentTime(moment().format('h:mm A')))
+        //fetch('./api/Dashboard/GetNotifications')
+        //    .then(response => response.json())
+        //    .then(data => setNotifications(data.sort(function (a, b) {
+        //        //oldest at the top, newest at the bottom
+        //        return new Date(a.dateFired) - new Date(b.dateFired);
+        //    })))
+        //    .then(setCurrentTime(moment().format('h:mm A')))
     }
 
     useEffect(() => {

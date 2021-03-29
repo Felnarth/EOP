@@ -3,116 +3,282 @@
 }
 
 .react-grid-layout {
-  position: relative;
-  transition: height 200ms ease;
+    position: relative;
+    transition: height 200ms ease;
 }
+
 .react-grid-item {
-  transition: all 200ms ease;
-  transition-property: left, top;
-}
-.react-grid-item img {
-  pointer-events: none;
-  user-select: none;  
-}
-.react-grid-item.cssTransforms {
-  transition-property: transform;
-}
-.react-grid-item.resizing {
-  z-index: 1;
-  will-change: width, height;
+    transition: all 200ms ease;
+    transition-property: left, top;
 }
 
-.react-grid-item.react-draggable-dragging {
-  transition: none;
-  z-index: 3;
-  will-change: transform;
-}
+    .react-grid-item img {
+        pointer-events: none;
+        user-select: none;
+    }
 
-.react-grid-item.dropping {
-  visibility: hidden;
-}
+    .react-grid-item.cssTransforms {
+        transition-property: transform;
+    }
 
-.react-grid-item.react-grid-placeholder {
-  background: red;
-  opacity: 0.2;
-  transition-duration: 100ms;
-  z-index: 2;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
+    .react-grid-item.resizing {
+        z-index: 1;
+        will-change: width, height;
+    }
 
-.react-grid-item > .react-resizable-handle {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-}
+    .react-grid-item.react-draggable-dragging {
+        transition: none;
+        z-index: 3;
+        will-change: transform;
+    }
 
-.react-grid-item > .react-resizable-handle::after {
-  content: "";
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  width: 5px;
-  height: 5px;
-  border-right: 2px solid rgba(0, 0, 0, 0.4);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
-}
+    .react-grid-item.dropping {
+        visibility: hidden;
+    }
+
+    .react-grid-item.react-grid-placeholder {
+        background: red;
+        opacity: 0.2;
+        transition-duration: 100ms;
+        z-index: 2;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+
+    .react-grid-item > .react-resizable-handle {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+    }
+
+        .react-grid-item > .react-resizable-handle::after {
+            content: "";
+            position: absolute;
+            right: 3px;
+            bottom: 3px;
+            width: 5px;
+            height: 5px;
+            border-right: 2px solid rgba(0, 0, 0, 0.4);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+        }
 
 .react-resizable-hide > .react-resizable-handle {
-  display: none;
+    display: none;
 }
 
 .react-grid-item > .react-resizable-handle.react-resizable-handle-sw {
-  bottom: 0;
-  left: 0;
-  cursor: sw-resize;
-  transform: rotate(90deg);
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+    transform: rotate(90deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-se {
-  bottom: 0;
-  right: 0;
-  cursor: se-resize;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-nw {
-  top: 0;
-  left: 0;
-  cursor: nw-resize;
-  transform: rotate(180deg);
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+    transform: rotate(180deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-ne {
-  top: 0;
-  right: 0;
-  cursor: ne-resize;
-  transform: rotate(270deg);
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+    transform: rotate(270deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w,
 .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
-  top: 50%;
-  margin-top: -10px;
-  cursor: ew-resize;
+    top: 50%;
+    margin-top: -10px;
+    cursor: ew-resize;
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
-  left: 0;
-  transform: rotate(135deg);
+    left: 0;
+    transform: rotate(135deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
-  right: 0;
-  transform: rotate(315deg);
+    right: 0;
+    transform: rotate(315deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n,
 .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
-  left: 50%;
-  margin-left: -10px;
-  cursor: ns-resize;
+    left: 50%;
+    margin-left: -10px;
+    cursor: ns-resize;
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n {
-  top: 0;
-  transform: rotate(225deg);
+    top: 0;
+    transform: rotate(225deg);
 }
+
 .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
-  bottom: 0;
-  transform: rotate(45deg);
+    bottom: 0;
+    transform: rotate(45deg);
+}
+
+.react-kanban-board {
+    padding: 5px;
+    justify-content: center;
+}
+
+.react-kanban-card {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 7px
+}
+
+.react-kanban-card-skeleton,
+.react-kanban-card,
+.react-kanban-card-adder-form {
+    box-sizing: border-box;
+    max-width: 250px;
+    min-width: 250px
+}
+
+.react-kanban-card--dragging {
+    box-shadow: 2px 2px grey
+}
+
+.react-kanban-card__description {
+    padding-top: 10px
+}
+
+.react-kanban-card__title {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between
+}
+
+.react-kanban-column {
+    padding: 15px;
+    border-radius: 2px;
+    border-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 5px;
+    height: 100%;
+    background-color: lightslategray;
+    width: 300px;
+}
+
+.react-kanban-column input:focus {
+    outline: none
+}
+
+.react-kanban-card-adder-form {
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 7px
+}
+
+.react-kanban-card-adder-form input {
+    border: 0px;
+    font-family: inherit;
+    font-size: inherit
+}
+
+.react-kanban-card-adder-button {
+    width: 100%;
+    margin-top: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+    border-radius: 3px;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold
+}
+
+.react-kanban-card-adder-button:hover {
+    background-color: #ccc
+}
+
+.react-kanban-card-adder-form__title {
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px
+}
+
+.react-kanban-card-adder-form__title:focus {
+    outline: none
+}
+
+.react-kanban-card-adder-form__description {
+    width: 100%;
+    margin-top: 10px
+}
+
+.react-kanban-card-adder-form__description:focus {
+    outline: none
+}
+
+.react-kanban-card-adder-form__button {
+    background-color: #eee;
+    border: none;
+    padding: 5px;
+    width: 45%;
+    margin-top: 5px;
+    border-radius: 3px
+}
+
+.react-kanban-card-adder-form__button:hover {
+    transition: 0.3s;
+    cursor: pointer;
+    background-color: #ccc
+}
+
+.react-kanban-column-header {
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
+.react-kanban-column-header input:focus {
+    outline: none
+}
+
+.react-kanban-column-header__button {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc
+}
+
+.react-kanban-column-header__button:hover,
+.react-kanban-column-header__button:focus,
+.react-kanban-column-header__button:active {
+    background-color: #e6e6e6
+}
+
+.react-kanban-column-adder-button {
+    border: 2px dashed #eee;
+    height: 132px;
+    margin: 5px
+}
+
+.react-kanban-column-adder-button:hover {
+    cursor: pointer
 }

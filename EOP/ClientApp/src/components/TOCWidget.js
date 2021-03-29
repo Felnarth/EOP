@@ -39,7 +39,13 @@ export default function TOCWidget(props) {
     function GetEvents() {
         fetch('./api/Dashboard/GetEvents')
             .then(response => response.json())
-            .then(data => setEvents(data))
+            .then(data => {
+                data.forEach(item => {
+                    item.end = new Date(item.end);
+                    item.start = new Date(item.start);
+                });
+                setEvents(data)
+            })
             .then(setCurrentTime(moment().format('h:mm A')))
     }
 
@@ -47,16 +53,6 @@ export default function TOCWidget(props) {
         //get events to populate calendar
         GetEvents();
     }, [props.isStatic]);
-
-    //const MyEvents = [
-    //    {
-    //        id: 0,                                      //ID
-    //        userId: "j1023",                            //USERID
-    //        title: "j1023" + " - " + "Long Vacation",   //EVENT_TITLE
-    //        start: new Date(2021, 3, 5),                //EVENT_START
-    //        end: new Date(2021, 3, 9),                  //EVENT_START
-    //    }
-    //];
 
     const handleClickOpen = (e) => {
         setDialogEventObj(e);

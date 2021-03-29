@@ -21,6 +21,57 @@ namespace EOP.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult> GetKanban()
+        {
+            try
+            {
+                List<KanbanTask> kanbanTasks = await _context.KanbanTasks.Where(e => e.Status != "archived").ToListAsync();
+
+                var list = kanbanTasks.Select(t => new { id = t.TaskId, content = new { description = t.Description, dueDate = t.DueDate.ToString("MM/dd/yyyy"), forField = t.ForField, status = t.Status} }).ToList();
+
+                return Ok(list);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> UpdateKanbanTask([FromBody]KanbanTask kanbanTask)
+        {
+            try
+            {
+                _context.KanbanTasks.Update(kanbanTask);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> SetKanbanTaskArchived(string id)
+        {
+            try
+            {
+                Guid guid = new Guid(id);
+                KanbanTask kanbanTask = await _context.KanbanTasks.FindAsync(guid);
+                kanbanTask.Status = "Archived";
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications()
         {
             try
@@ -29,6 +80,7 @@ namespace EOP.Controllers
             }
             catch (Exception)
             {
+
                 return BadRequest();
             }
             
@@ -46,6 +98,7 @@ namespace EOP.Controllers
             }
             catch (Exception)
             {
+
                 return BadRequest();
             }
 
@@ -63,6 +116,7 @@ namespace EOP.Controllers
             }
             catch (Exception)
             {
+
                 return BadRequest();
             }
 
@@ -73,6 +127,8 @@ namespace EOP.Controllers
         {
             List<TOCObject> defaultItems = new List<TOCObject>();
             defaultItems.Add(new TOCObject(0, "j1023", "j1023 - Long Vacation", new DateTime(2021, 4, 5), new DateTime(2021, 4, 9)));
+            defaultItems.Add(new TOCObject(0, "k0003", "k0003 - Doc Appointment", new DateTime(2021, 3, 19, 13, 0, 0), new DateTime(2021, 3, 19, 14, 0, 0)));
+            defaultItems.Add(new TOCObject(0, "a3000", "a3000 - Doc Appt", new DateTime(2021, 3, 14, 12, 0, 0), new DateTime(2021, 3, 14, 13, 0, 0)));
             return defaultItems;
         }
 
