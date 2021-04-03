@@ -110,7 +110,7 @@ export default function Kanban() {
 
     return (
             <Card className={classes.cardRoot}>
-                {/*<Button onClick={addNewCard}>Add Card</Button>*/}
+                <Button onClick={addNewCard}>Add Card</Button>
                 <Board
                     renderCard={({ id, content }, { removeCard, dragging }) => (
                     <TaskCard id={id} description={content.description} dueDate={content.dueDate} forField={content.forField} status={content.status} dragging={dragging} updateBoard={GetKanbanBoard}/>
