@@ -1,22 +1,50 @@
 ﻿import React, { useState, useEffect } from 'react';
 import Board, { moveCard, addCard } from "@lourenci/react-kanban";
-import { Button, Card, CardActions, CardContent, CardHeader, IconButton, TextField } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Snackbar, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import SaveIcon from '@material-ui/icons/Save';
 import ArchiveIcon from '@material-ui/icons/Archive';
+import DeleteIcon from '@material-ui/icons/Delete';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
+import { DataGrid } from '@material-ui/data-grid';
+import SearchBar from 'material-ui-search-bar';
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 import '../css/styles.css'
 
 const useStyles = makeStyles({
     cardRoot: {
-        height: "100%",
-        minHeight: "800px"
+        minHeight: "800px",
+        marginTop: "5px"
     },
     cardContent: {
-        textAlign: "center",
-        paddingTop: "5px"
+        textAlign: "center"
     },
     cardAction: {
         padding: "0px"
+    },
+    cardActionTwo: {
+        paddingBottom: "0px"
+    },
+    cardActionAvatar: {
+        marginTop: "8px",
+        marginRight: "8px"
+    },
+    dataGridRoot: {
+        height: "90%"
+    },
+    dialogPaper: {
+        width: "70%",
+        maxWidth: "unset",
+        height: "70%"
+    },
+    pickers: {
+        margin: "0px"
     }
 });
 
@@ -52,6 +80,16 @@ export default function Kanban() {
             }
         ]
     });
+
+    const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
+    const [snackbarText, setSnackbarText] = React.useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState("");
+    const [archiveOpen, setArchiveOpen] = React.useState(false);
+
+    const handleArchiveClose = () => {
+        setArchiveOpen(false);
+        GetKanbanBoard();
+    };
 
     const GetKanbanBoard = () => {
         fetch('./api/Dashboard/GetKanban')
@@ -94,33 +132,108 @@ export default function Kanban() {
     }, []);
 
     function handleCardMove(_card, source, destination) {
+        let column = "";
+
+        switch (destination.toColumnId) {
+            case 1:
+                column = "Ready";
+                break;
+            case 2:
+                column = "Today";
+                break;
+            case 3:
+                column = "Doing";
+                break;
+            case 4:
+                column = "Waiting";
+                break;
+            case 5:
+                column = "Done";
+                break;
+        }
+
+        const url = new URL(window.location.origin + "/api/Dashboard/SetTaskStatus");
+        const params = { id: _card.id, status: column };
+        url.search = new URLSearchParams(params);
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    
+                }
+                else
+                    throw response;
+            })
+            .catch(err => {
+                setSnackbarText("There was an error processing your request.");
+                setSnackbarSeverity("error");
+                setIsSnackbarOpen(true);
+            })   
         const updatedBoard = moveCard(controlledBoard, source, destination);
         setBoard(updatedBoard);
     }
 
     const addNewCard = (e) => {
+        fetch('./api/Dashboard/AddKanbanTask')
+            .then(response => {
+                if (!response.ok)
+                    throw response;
+                else
+                    return response.json();
+            })
+            .then(data => {
+                const updatedBoard = addCard(controlledBoard, { id: 1 }, {
+                    id: data.id,
+                    content: data.content
+                });
+                setBoard({ ...updatedBoard });
+                setSnackbarText("Task updated");
+                setSnackbarSeverity("success");
+                setIsSnackbarOpen(true);
+            })
+            .catch(err => {
+                console.log(err);
+                setSnackbarText("There was an error processing your request.");
+                setSnackbarSeverity("error");
+                setIsSnackbarOpen(true);
+            });        
+    };
 
-        const updatedBoard = addCard(controlledBoard, { id: 1 }, {
-            id: 2,
-            title: "Test Card Title",
-            description: "Test Card Description"
-        });
-        setBoard({ ...updatedBoard });
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setIsSnackbarOpen(false);
     };
 
     return (
-            <Card className={classes.cardRoot}>
-                <Button onClick={addNewCard}>Add Card</Button>
-                <Board
-                    renderCard={({ id, content }, { removeCard, dragging }) => (
-                    <TaskCard id={id} description={content.description} dueDate={content.dueDate} forField={content.forField} status={content.status} dragging={dragging} updateBoard={GetKanbanBoard}/>
-                    )}
-                    onCardDragEnd={handleCardMove}
-                    disableColumnDrag
-                >
-                    {controlledBoard}
-                </Board>
-            </Card>
+        <Card className={classes.cardRoot}>
+            <CardHeader
+                avatar={
+                    <Button onClick={addNewCard} variant="contained" color="secondary">Add Card</Button>
+                }
+                action={
+                    <Button onClick={() => setArchiveOpen(true)} variant="contained">View Archive</Button>
+                }
+                className={classes.cardActionTwo}
+            />            
+            <Board
+                renderCard={({ id, content }, { removeCard, dragging }) => (
+                    <TaskCard id={id} description={content.description} dueDate={content.dueDate} forField={content.forField} status={content.status} dragging={dragging} updateBoard={GetKanbanBoard} setIsSnackbarOpen={setIsSnackbarOpen} setSnackbarText={setSnackbarText} setSnackbarSeverity={setSnackbarSeverity}/>
+                )}
+                onCardDragEnd={handleCardMove}
+                disableColumnDrag
+            >
+                {controlledBoard}
+            </Board>
+            <Snackbar open={isSnackbarOpen} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={snackbarSeverity} variant="filled">
+                    {snackbarText}
+                </Alert>
+            </Snackbar>
+            <ArchivedKanban isOpen={archiveOpen} setClosed={handleArchiveClose}/>
+        </Card>
     );
 }
 
@@ -151,6 +264,10 @@ function TaskCard(props) {
         }
     };
 
+    const handleDateChange = (date) => {
+        setDueDate(date);
+    };
+
     const updateTask = () => {
 
         let _data = {
@@ -167,14 +284,19 @@ function TaskCard(props) {
             headers: { "Content-type": "application/json; charset=UTF-8" }
         })
             .then(response => {
-                if (response.ok)
-                    console.log("Success");
-                    //TODO: snackbar notification
+                if (response.ok) {
+                    props.setSnackbarText("Task updated");
+                    props.setSnackbarSeverity("success");
+                    props.setIsSnackbarOpen(true);
+                }                    
                 else
                     throw response;
             })
-            .catch(err => console.log(err));
-        //TODO: snackbar notification
+            .catch(err => {
+                props.setSnackbarText("There was an error processing your request.");
+                props.setSnackbarSeverity("error");
+                props.setIsSnackbarOpen(true);
+            });
     }
 
     const archiveTask = () => {
@@ -184,7 +306,9 @@ function TaskCard(props) {
         fetch(url)
             .then(res => {
                 if (res.ok) {
-                    //TODO: snackbar notification
+                    props.setSnackbarText("Task archived");
+                    props.setSnackbarSeverity("success");
+                    props.setIsSnackbarOpen(true);
                     props.updateBoard();
                 }
                 else
@@ -192,7 +316,9 @@ function TaskCard(props) {
             })
             .catch(err => {
                 console.log(err);
-                //TODO: snackbar notification
+                props.setSnackbarText("There was an error processing your request.");
+                props.setSnackbarSeverity("error");
+                props.setIsSnackbarOpen(true);
             })
     }
 
@@ -205,7 +331,7 @@ function TaskCard(props) {
                     </IconButton>
                 }
                 action={
-                    <IconButton aria-label="save" onClick={updateTask}>
+                    <IconButton aria-label="save" onClick={updateTask} className={classes.cardActionAvatar}>
                         <SaveIcon />
                     </IconButton>
                 }
@@ -222,13 +348,22 @@ function TaskCard(props) {
                 />
             </CardContent>
             <CardActions>
-                <TextField
-                    id="dueDate"
-                    label="Date"
-                    value={dueDate}
-                    onChange={handleChange}
-                    size="small"
-                />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        disableToolbar
+                        variant="inline"
+                        format="MM/dd/yyyy"
+                        margin="normal"
+                        id="date-picker-inline"
+                        label="Due Date"
+                        value={dueDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                        className={classes.pickers}
+                    />
+                </MuiPickersUtilsProvider>
                 <TextField
                     id="forField"
                     label="For"
@@ -239,4 +374,161 @@ function TaskCard(props) {
             </CardActions>
         </Card>
         );
+}
+
+function ArchivedKanban(props) {
+    const classes = useStyles()
+    const [allTasks, setAllTasks] = React.useState([]);
+    const [rows, setRows] = React.useState([]);
+    const b = useState(""), searched = b[0], setSearched = b[1];
+    const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
+    const [snackbarText, setSnackbarText] = React.useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState("");
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setIsSnackbarOpen(false);
+    };
+
+    const GetArchive = () => {
+        fetch('./api/dashboard/GetKanbanArchive')
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else
+                    throw response;
+            })
+            .then(data => {
+                setAllTasks(data.map((elem) => (
+                    {
+                        ...elem,
+                        dueDate: moment(data.dueDate).format('M/D/YY'),
+                        id: elem.taskId
+                    }
+                )));
+                setRows(data.map((elem) => (
+                    {
+                        ...elem,
+                        dueDate: moment(data.dueDate).format('M/D/YY'),
+                        id: elem.taskId
+                    }
+                )));
+            })
+            .catch(err => {
+                setSnackbarText("There was an error processing your request.");
+                setSnackbarSeverity("error");
+                setIsSnackbarOpen(true);
+            })
+    }
+
+    const SetUnarchived = (e) => {
+        const url = new URL(window.location.origin + "/api/Dashboard/SetKanbanTaskUnArchived");
+        const params = { id: e.currentTarget.id };
+        url.search = new URLSearchParams(params);
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    setSnackbarText("Task Unarchived");
+                    setSnackbarSeverity("success");
+                    setIsSnackbarOpen(true);
+                    GetArchive();
+                }
+                else
+                    throw response;
+            })
+            .catch(err => {
+                setSnackbarText("There was an error processing your request.");
+                setSnackbarSeverity("error");
+                setIsSnackbarOpen(true);
+            })
+    }
+
+    const DeleteTask = (e) => {
+        const url = new URL(window.location.origin + "/api/Dashboard/DeleteKanbanTask");
+        const params = { id: e.currentTarget.id };
+        url.search = new URLSearchParams(params);
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    setSnackbarText("Task Deleted");
+                    setSnackbarSeverity("success");
+                    setIsSnackbarOpen(true);
+                    GetArchive();
+                }
+                else
+                    throw response;
+            })
+            .catch(err => {
+                setSnackbarText("There was an error processing your request.");
+                setSnackbarSeverity("error");
+                setIsSnackbarOpen(true);
+            })
+    }
+
+    useEffect(() => {
+        GetArchive();
+    }, [props.isOpen]);
+
+    const columns = [
+        //{ field: 'taskId', headerName: 'Id', width: 150 },
+        { field: 'description', headerName: 'Description', flex: 2 },
+        { field: 'dueDate', headerName: 'Due Date', type: 'date', flex: 1 },
+        { field: 'forField', headerName: 'For', flex: 1 },
+        {
+            field: 'unarchive',
+            headerName: 'Un-Archive',
+            flex: 1,
+            renderCell: (params) => (
+                <Button variant="contained" onClick={SetUnarchived} id={params.id}><UnarchiveIcon /></Button>
+            )
+        },
+        {
+            field: 'delete',
+            headerName: 'delete',
+            flex: 1,
+            renderCell: (params) => (
+                <Button variant="contained" onClick={DeleteTask} id={params.id}><DeleteIcon /></Button>
+            )
+        }
+    ];
+
+    const requestSearch = function (searchedVal) {
+        const filteredRowsDescription = allTasks.filter(function (e) {
+            return e.description.toLowerCase().includes(searchedVal.toLowerCase());
+        });
+        const filteredRowsForField = allTasks.filter(function (e) {
+            return e.forField.toLowerCase().includes(searchedVal.toLowerCase());
+        });
+        setRows([...new Set([...filteredRowsDescription, ...filteredRowsForField])]);
+    };
+
+    const cancelSearch = function () {
+        setSearched("");
+        requestSearch(searched);
+    };
+
+    return (
+        <Dialog open={props.isOpen} onClose={props.setClosed} classes={{ paper: classes.dialogPaper }}>
+            <DialogTitle>Archived Kanban Board</DialogTitle>
+            <DialogContent>
+                <SearchBar
+                    value={searched}
+                    onChange={(searchVal) => requestSearch(searchVal)}
+                    onCancelSearch={() => cancelSearch()}
+                />
+                <DataGrid rows={rows} columns={columns} pageSize={5} className={classes.dataGridRoot} />
+                <Snackbar open={isSnackbarOpen} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity={snackbarSeverity} variant="filled">
+                        {snackbarText}
+                    </Alert>
+                </Snackbar>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.setClosed}>Close</Button>
+            </DialogActions>
+        </Dialog>
+    );
 }

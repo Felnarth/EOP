@@ -25,7 +25,7 @@ namespace EOP.Controllers
         {
             try
             {
-                List<KanbanTask> kanbanTasks = await _context.KanbanTasks.Where(e => e.Status != "archived").ToListAsync();
+                List<KanbanTask> kanbanTasks = await _context.KanbanTasks.Where(e => !e.Status.Equals("Archived")).ToListAsync();
 
                 var list = kanbanTasks.Select(t => new { id = t.TaskId, content = new { description = t.Description, dueDate = t.DueDate.ToString("MM/dd/yyyy"), forField = t.ForField, status = t.Status} }).ToList();
 
@@ -33,6 +33,21 @@ namespace EOP.Controllers
             }
             catch (Exception)
             {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<KanbanTask>>> GetKanbanArchive()
+        {
+            try
+            {
+                List<KanbanTask> kanbanTasks = await _context.KanbanTasks.Where(e => e.Status.Equals("Archived")).ToListAsync();
+                return Ok(kanbanTasks);
+            }
+            catch (Exception)
+            {
+
                 return BadRequest();
             }
         }
@@ -61,6 +76,86 @@ namespace EOP.Controllers
                 Guid guid = new Guid(id);
                 KanbanTask kanbanTask = await _context.KanbanTasks.FindAsync(guid);
                 kanbanTask.Status = "Archived";
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> SetKanbanTaskUnArchived(string id)
+        {
+            try
+            {
+                Guid guid = new Guid(id);
+                KanbanTask kanbanTask = await _context.KanbanTasks.FindAsync(guid);
+                kanbanTask.Status = "Ready";
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> SetTaskStatus(string id, string status)
+        {
+            try
+            {
+                Guid guid = new Guid(id);
+                KanbanTask kanbanTask = await _context.KanbanTasks.FindAsync(guid);
+                kanbanTask.Status = status;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> AddKanbanTask()
+        {
+            try
+            {
+                KanbanTask kanbanTask = new KanbanTask
+                {
+                    TaskId = new Guid(),
+                    Description = "",
+                    DueDate = DateTime.Now,
+                    ForField = "",
+                    Status = "Ready"
+                };
+
+                await _context.KanbanTasks.AddAsync(kanbanTask);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { id = kanbanTask.TaskId, content = new { description = kanbanTask.Description, dueDate = kanbanTask.DueDate.ToString("MM/dd/yyyy"), forField = kanbanTask.ForField, status = kanbanTask.Status } });
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> DeleteKanbanTask(string id)
+        {
+            try
+            {
+                Guid guid = new Guid(id);
+                KanbanTask kanbanTask = await _context.KanbanTasks.FindAsync(guid);
+                _context.KanbanTasks.Remove(kanbanTask);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
