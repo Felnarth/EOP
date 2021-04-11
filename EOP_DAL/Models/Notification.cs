@@ -13,6 +13,6 @@ namespace EOP_DAL.Models
         public string Title { get; set; }
         public string Text { get; set; }
         public int Severity { get; set; }
-        public DateTime DateFired { get; set; }
+        public DateTime DateToFire { get; set; }
     }
 }

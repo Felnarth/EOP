@@ -38,7 +38,7 @@ namespace EOP_DAL.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.DateFired).HasColumnType("datetime");
+                entity.Property(e => e.DateToFire).HasColumnType("datetime");
 
                 entity.Property(e => e.Status)
                     .IsRequired()

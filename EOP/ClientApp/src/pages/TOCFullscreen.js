@@ -48,8 +48,14 @@ export default function TOCFullscreen() {
     }
 
     useEffect(() => {
-        //get events to populate calendar
         GetEvents();
+        //schedule timer to execute fetch call on an interval
+        //interavl: 15 minutes
+        var timer = setTimeout(GetEvents(), 15 * 60 * 1000);
+        return () => {
+            //clear timeout if component unmounted
+            clearTimeout(timer);
+        };
     }, []);
 
     const handleClickOpen = (e) => {

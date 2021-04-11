@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import Board, { moveCard, addCard } from "@lourenci/react-kanban";
-import { Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Snackbar, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import SaveIcon from '@material-ui/icons/Save';
 import ArchiveIcon from '@material-ui/icons/Archive';
@@ -13,7 +13,7 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
-    KeyboardDatePicker,
+    KeyboardDatePicker
 } from '@material-ui/pickers';
 import '../css/styles.css'
 
@@ -150,6 +150,9 @@ export default function Kanban() {
             case 5:
                 column = "Done";
                 break;
+            default:
+                column = "";
+                break;
         }
 
         const url = new URL(window.location.origin + "/api/Dashboard/SetTaskStatus");
@@ -260,6 +263,8 @@ function TaskCard(props) {
                 break;
             case "forField":
                 setForField(e.target.value);
+                break;
+            default:
                 break;
         }
     };

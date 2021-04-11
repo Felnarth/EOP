@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, ButtonGroup, Card, CardContent, CardHeader, FormControl, IconButton, Snackbar, Tab, Tabs, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, CardHeader, FormControl, IconButton, Snackbar, Tab, Tabs, Typography } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import LockIcon from '@material-ui/icons/Lock';
@@ -58,21 +58,21 @@ export default function NotificationWidget(props) {
             .then(response => response.json())
             .then(data => setNotifications(data.sort(function (a, b) {
                 //oldest at the top, newest at the bottom
-                return new Date(a.dateFired) - new Date(b.dateFired);
+                return new Date(a.dateToFire) - new Date(b.dateToFire);
             })))
             .then(setCurrentTime(moment().format('h:mm A')))
     }
 
     useEffect(() => {
-        //get notifications to populate widget
         getNotifications();
-
-        //set timer to refresh notifications
+        //schedule timer to execute fetch call on an interval
+        //interavl: 10 minutes
+        var timer = setTimeout(getNotifications(), 10 * 60 * 1000);
+        return () => {
+            //clear timeout if component unmounted
+            clearTimeout(timer);
+        };
     }, [props.isStatic]);
-
-    const handleNavClick = () => {
-        window.location.href = "/EOP/NotificationFullscreen";
-    }
 
     const handleDismissal = (key) => {
         //fetch request to change notification status to dismissed
@@ -127,6 +127,7 @@ export default function NotificationWidget(props) {
             })
     }
 
+    //handle closing snackbar
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -146,7 +147,7 @@ export default function NotificationWidget(props) {
                     </FormControl>
                 }
                 action={
-                    <ButtonGroup>
+                    <div>
                         <IconButton area-label="fullscreen">
                             <Link to="/EOP/NotificationFullscreen"><FullscreenIcon /></Link>
                         </IconButton>
@@ -155,7 +156,7 @@ export default function NotificationWidget(props) {
                             <Typography variant="caption">As of<br />{currentTime}</Typography>
                             <SyncIcon />
                         </IconButton>
-                    </ButtonGroup>
+                    </div>
                 }
                 title={
                     <Typography variant="h6" className={classes.title}>Notifications</Typography>
@@ -174,6 +175,7 @@ export default function NotificationWidget(props) {
     );
 }
 
+//notification panels
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -208,11 +210,12 @@ function a11yProps(index) {
     };
 }
 
+//function for dynamic alert content
 function AlertContent(props) {
     return (
         <div>
             <p style={{ float: "left" }}>{props.text}</p>
-            <p style={{ float: "right" }}><i>{moment(props.dateFired).format('M/D/YY h:mm A')}</i></p>
+            <p style={{ float: "right" }}><i>{moment(props.dateToFire).format('M/D/YY h:mm A')}</i></p>
         </div>
     );
 }
@@ -250,11 +253,12 @@ function VerticalTabs(props) {
                 <Tab label="Overview" {...a11yProps(0)} />
                 <Tab label="TOC Calendar" {...a11yProps(1)} />
                 <Tab label="Custom" {...a11yProps(2)} />
-                <Tab label="History" {...a11yProps(3)} />
+                <Tab label="Upcoming" {...a11yProps(3)} />
+                <Tab label="History" {...a11yProps(4)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 {props.notifications.map((item) => {
-                    if (item.status !== "dismissed")
+                    if (item.status !== "dismissed" && new Date(item.dateToFire) < Date.now())
                         return (
                             <Alert
                                 action={
@@ -271,14 +275,16 @@ function VerticalTabs(props) {
                                 }
                                 severity="info" className={classes.alert} key={item.id} classes={{ message: classes.message }}>
                                 <AlertTitle>{item.title}</AlertTitle>
-                                <AlertContent text={item.text} dateFired={item.dateFired} />
+                                <AlertContent text={item.text} dateToFire={item.dateToFire} />
                             </Alert>
                         );
+                    else
+                        return null;
                 })}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 {props.notifications.map((item) => {
-                    if (item.category === "toc" && item.status !== "dismissed")
+                    if (item.category === "toc" && item.status !== "dismissed" && new Date(item.dateToFire) < Date.now())
                         return (
                             <Alert
                                 action={
@@ -295,14 +301,16 @@ function VerticalTabs(props) {
                                 }
                                 severity="info" className={classes.alert} key={item.id} classes={{ message: classes.message }}>
                                 <AlertTitle>{item.title}</AlertTitle>
-                                <AlertContent text={item.text} dateFired={item.dateFired} />
+                                <AlertContent text={item.text} dateToFire={item.dateToFire} />
                             </Alert>
                         );
+                    else
+                        return null;
                 })}
             </TabPanel>
             <TabPanel value={value} index={2}>
                 {props.notifications.map((item) => {
-                    if (item.category === "custom" && item.status !== "dismissed")
+                    if (item.category === "custom" && item.status !== "dismissed" && new Date(item.dateToFire) < Date.now())
                         return (
                             <Alert
                                 action={
@@ -319,12 +327,40 @@ function VerticalTabs(props) {
                                 }
                                 severity="info" className={classes.alert} key={item.id} classes={{ message: classes.message }}>
                                 <AlertTitle>{item.title}</AlertTitle>
-                                <AlertContent text={item.text} dateFired={item.dateFired} />
+                                <AlertContent text={item.text} dateToFire={item.dateToFire} />
                             </Alert>
                         );
+                    else
+                        return null;
                 })}
             </TabPanel>
             <TabPanel value={value} index={3}>
+                {props.notifications.map((item) => {
+                    if (item.status !== "dismissed" && new Date(item.dateToFire) > Date.now())
+                        return (
+                            <Alert
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => {
+                                            handleDismissal(item.id);
+                                        }}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }
+                                severity="info" className={classes.alert} key={item.id} classes={{ message: classes.message }}>
+                                <AlertTitle>{item.title}</AlertTitle>
+                                <AlertContent text={item.text} dateToFire={item.dateToFire} />
+                            </Alert>
+                        );
+                    else
+                        return null;
+                })}
+            </TabPanel>
+            <TabPanel value={value} index={4}>
                 {props.notifications.map((item) => {
                     if (item.status === "dismissed")
                         return (
@@ -343,12 +379,13 @@ function VerticalTabs(props) {
                                 }
                                 severity="success" className={classes.alert} key={item.id} classes={{ message: classes.message }}>
                                 <AlertTitle>{item.title}</AlertTitle>
-                                <AlertContent text={item.text} dateFired={item.dateFired} />
+                                <AlertContent text={item.text} dateToFire={item.dateToFire} />
                             </Alert>
                         );
+                    else
+                        return null;
                 })}
             </TabPanel>
         </div>
     );
 }
-

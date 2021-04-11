@@ -70,7 +70,7 @@ function a11yProps(index) {
     };
 }
 
-const HistoryForm = (props) => {
+function HistoryForm(props) {
     const classes = useStyles();
     const [history, setHistory] = React.useState([]);
     const [rows, setRows] = React.useState([]);
@@ -239,7 +239,7 @@ export default function TrainingTable(props) {
                     <DataGrid rows={rows} columns={columns} pageSize={5} className={classes.gridRoot}/>
                 </TabPanel>
                 <TabPanel value={value} index={1} className={classes.tabPanel}>
-                    {HistoryForm}
+                    <HistoryForm />
                 </TabPanel>
             </CardContent>
         </Card>

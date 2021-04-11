@@ -1,5 +1,4 @@
 ﻿import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -11,14 +10,6 @@ const useStyles = makeStyles({
 
 export default function PersonDialog(props) {
     const classes = useStyles();
-
-    const [persons, setPersons] = React.useState(
-        {
-            id: "",
-            name: "",
-            children: []
-        }
-    );
 
     useEffect(() => {
         //get people to populate orgchart
@@ -39,8 +30,3 @@ export default function PersonDialog(props) {
         </Dialog>
     );
 }
-
-PersonDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-};

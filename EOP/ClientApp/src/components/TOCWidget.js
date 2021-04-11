@@ -1,6 +1,6 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ButtonGroup, Card, CardContent, CardHeader, Dialog, FormControl, IconButton, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, FormControl, IconButton, Typography } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { makeStyles } from '@material-ui/core/styles';
 import LockIcon from '@material-ui/icons/Lock';
@@ -36,6 +36,7 @@ export default function TOCWidget(props) {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
     const [dialogEventObj, setDialogEventObj] = React.useState();
 
+    //fetch request to get events
     function GetEvents() {
         fetch('./api/Dashboard/GetEvents')
             .then(response => response.json())
@@ -50,19 +51,29 @@ export default function TOCWidget(props) {
     }
 
     useEffect(() => {
-        //get events to populate calendar
         GetEvents();
+        //schedule timer to execute fetch call on an interval
+        //interavl: 15 minutes
+        var timer = setTimeout(GetEvents(), 15 * 60 * 1000);
+        return () => {
+            //clear timeout if component unmounted
+            clearTimeout(timer);
+        };
     }, [props.isStatic]);
 
+    //handling event dialog opening
+    //(whena an event is clicked, a dialog is opened)
     const handleClickOpen = (e) => {
         setDialogEventObj(e);
         setIsDialogOpen(true);
     };
 
+    //handling event dialog closing
     const handleClose = () => {
         setIsDialogOpen(false);
     };
 
+    //custom calendar components
     let components = {
         toolbar: TOCCustomToolbar
     };
@@ -78,7 +89,7 @@ export default function TOCWidget(props) {
                     </FormControl>
                 }
                 action={
-                    <ButtonGroup>
+                    <div>
                         <IconButton area-label="fullscreen">
                             <Link to="/EOP/TOCFullscreen"><FullscreenIcon /></Link>
                         </IconButton>
@@ -87,7 +98,7 @@ export default function TOCWidget(props) {
                             <Typography variant="caption">As of<br />{currentTime}</Typography>
                             <SyncIcon />
                         </IconButton>
-                    </ButtonGroup>
+                    </div>
                 }
                 title={
                     <Typography variant="h6" className={classes.title}>Time Off Calendar Widget</Typography>
@@ -102,7 +113,7 @@ export default function TOCWidget(props) {
                     onSelectEvent={handleClickOpen}
                 />
             </CardContent>
-            <TOCEventDialog isOpen={isDialogOpen} setClosed={handleClose} eventObj={dialogEventObj}/>
+            <TOCEventDialog isOpen={isDialogOpen} setClosed={handleClose} eventObj={dialogEventObj} />
         </Card>
     );
 }

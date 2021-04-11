@@ -1,5 +1,4 @@
 ﻿import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { DialogTitle, Dialog, DialogActions, DialogContent, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import OrganizationChart from "@dabeng/react-orgchart";
@@ -23,13 +22,6 @@ export default function OrgChartWidgetDialog(props) {
     const handleClose = () => {
         setIsDialogOpen(false);
     };
-    const [persons, setPersons] = React.useState(
-        {
-            id: "",
-            name: "",
-            children: []
-        }
-    );
 
     useEffect(() => {
         //get people to populate orgchart
@@ -49,8 +41,3 @@ export default function OrgChartWidgetDialog(props) {
         </Dialog>
     );
 }
-
-OrgChartWidgetDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-};

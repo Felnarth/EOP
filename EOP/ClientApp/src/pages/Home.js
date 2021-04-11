@@ -39,6 +39,7 @@ export default function Home() {
             case "d":
                 setIsTrainingWidgetStatic(!isTrainingWidgetStatic);
             default:
+                break;
         }
 
         setLayout(newLayout);

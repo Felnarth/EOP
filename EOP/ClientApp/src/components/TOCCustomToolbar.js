@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import clsx from 'clsx';
 import Toolbar from 'react-big-calendar/lib/Toolbar';
 import { AppBar, Button, ButtonGroup, Toolbar as MUIToolbar, Typography } from '@material-ui/core';
 import { withStyles } from "@material-ui/core/styles";
@@ -78,8 +77,7 @@ class TOCCustomToolbar extends Toolbar {
     }
 
     viewNamesGroup(messages) {
-        let viewNames = this.props.views
-        const view = this.props.view
+        let viewNames = this.props.views;
         const { classes } = this.props;
 
         if (viewNames.length > 1) {
