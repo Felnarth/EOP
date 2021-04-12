@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 .rbc-btn {
   color: inherit;
   font: inherit;
@@ -50,7 +50,8 @@ button.rbc-input::-moz-focus-inner {
   color: #999999; }
 
 .rbc-off-range-bg {
-  background: #e6e6e6; }
+    background: rgb(0 0 0 / 20%);
+}
 
 .rbc-header {
   overflow: hidden;
@@ -95,7 +96,8 @@ button.rbc-input::-moz-focus-inner {
       display: none; }
 
 .rbc-today {
-  background-color: #eaf6ff; }
+    background-color: rgb(255 255 255 / 30%);
+}
 
 .rbc-toolbar {
   display: flex;

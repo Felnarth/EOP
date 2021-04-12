@@ -26,11 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\components\TrainingHistoryWidget.js" />
-    <None Remove="ClientApp\src\pages\JavaScript.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EOP_DAL\EOP_DAL.csproj" />
   </ItemGroup>
 
