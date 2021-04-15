@@ -21,13 +21,43 @@ namespace EOP.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<DashWidget>>> GetDashboard()
+        {
+            try
+            {
+                return await _context.DashWidgets.ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> UpdateDashboard([FromBody] IEnumerable<DashWidget> dashWidgets)
+        {
+            try
+            {
+                _context.DashWidgets.UpdateRange(dashWidgets);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult> GetKanban()
         {
             try
             {
                 List<KanbanTask> kanbanTasks = await _context.KanbanTasks.Where(e => !e.Status.Equals("Archived")).ToListAsync();
 
-                var list = kanbanTasks.Select(t => new { id = t.TaskId, content = new { description = t.Description, dueDate = t.DueDate.ToString("MM/dd/yyyy"), forField = t.ForField, status = t.Status} }).ToList();
+                var list = kanbanTasks.Select(t => new { id = t.TaskId, content = new { description = t.Description, dueDate = t.DueDate.ToString("MM/dd/yyyy"), forField = t.ForField, status = t.Status } }).ToList();
 
                 return Ok(list);
             }
@@ -53,7 +83,7 @@ namespace EOP.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> UpdateKanbanTask([FromBody]KanbanTask kanbanTask)
+        public async Task<ActionResult> UpdateKanbanTask([FromBody] KanbanTask kanbanTask)
         {
             try
             {
@@ -178,7 +208,23 @@ namespace EOP.Controllers
 
                 return BadRequest();
             }
-            
+
+        }
+
+        [HttpPost("[action]")]
+        public ActionResult AddNotification([FromBody]Notification notification)
+        {
+            try
+            {
+                FormattableString formattableString = $"INSERT INTO [dbo].[Notification] ([Category] ,[Status] ,[Title] ,[Text] ,[Severity] ,[DateToFire]) VALUES({notification.Category}, {notification.Status}, {notification.Title}, {notification.Text}, {notification.Severity}, CAST({notification.DateToFire} as datetime))";
+                _context.Database.ExecuteSqlInterpolated(formattableString);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
 
         [HttpGet("[action]")]

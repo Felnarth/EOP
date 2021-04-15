@@ -9,8 +9,10 @@ import LockOpen from '@material-ui/icons/LockOpen';
 import SyncIcon from '@material-ui/icons/Sync';
 import CloseIcon from '@material-ui/icons/Close';
 import RedoIcon from '@material-ui/icons/Redo';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+import AddNotificationDialog from '../components/AddNotificationDialog';
 
 const useStyles = makeStyles((theme) => ({
     alert: {
@@ -52,6 +54,7 @@ export default function NotificationWidget(props) {
     const [snackbarText, setSnackbarText] = React.useState("");
     const [snackbarSeverity, setSnackbarSeverity] = React.useState("");
 
+    const [isAddNotificationDialogOpen, setIsAddNotificationDialogOpen] = React.useState(false);
     //get notifciations fetch requests placed in function as it is called multiple times
     function getNotifications() {
         fetch('./api/Dashboard/GetNotifications')
@@ -156,6 +159,9 @@ export default function NotificationWidget(props) {
                             <Typography variant="caption">As of<br />{currentTime}</Typography>
                             <SyncIcon />
                         </IconButton>
+                        <IconButton area-label="add" onClick={() => setIsAddNotificationDialogOpen(true)}>
+                            <AddCircleIcon />
+                        </IconButton>
                     </div>
                 }
                 title={
@@ -170,6 +176,7 @@ export default function NotificationWidget(props) {
                         {snackbarText}
                     </Alert>
                 </Snackbar>
+                <AddNotificationDialog isOpen={isAddNotificationDialogOpen} setClosed={() => setIsAddNotificationDialogOpen(false)} setIsSnackbarOpen={setIsSnackbarOpen} setSnackbarText={setSnackbarText} setSnackbarSeverity={setSnackbarSeverity}/>
             </CardContent>
         </Card>
     );

@@ -2,7 +2,7 @@
   "name": "eop",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://empop.azurewebsites.net/EOP",
   "dependencies": {
     "@dabeng/react-orgchart": "^1.0.0",
     "@date-io/date-fns": "^1.3.13",

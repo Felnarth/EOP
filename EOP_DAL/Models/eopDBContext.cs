@@ -16,6 +16,7 @@ namespace EOP_DAL.Models
 
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<KanbanTask> KanbanTasks { get; set; }
+        public virtual DbSet<DashWidget> DashWidgets { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,6 +71,23 @@ namespace EOP_DAL.Models
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<DashWidget>(entity =>
+            {
+                entity.ToTable("DashWidget");
+
+                entity.HasKey(e => e.DivKey);
+
+                entity.Property(e => e.XPos).IsRequired();
+
+                entity.Property(e => e.YPos).IsRequired();
+
+                entity.Property(e => e.Width).IsRequired();
+
+                entity.Property(e => e.Height).IsRequired();
+
+                entity.Property(e => e.MinWidth).IsRequired();
             });
 
             OnModelCreatingPartial(modelBuilder);
